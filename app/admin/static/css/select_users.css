@@ -1,0 +1,103 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #25252b;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    background: #2d2d39;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.container h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #45f3ff;
+}
+
+.container p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #bbb;
+}
+
+.actions {
+    margin-bottom: 20px;
+}
+
+.actions .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background: #ff2770;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770;
+    transition: all 0.3s ease;
+}
+
+.actions .button:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 15px #ff4d88, 0 0 40px #ff4d88;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.user-table th, .user-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #444;
+}
+
+.user-table th {
+    background: #3d3d49;
+    color: #fff;
+}
+
+.user-table tr:hover {
+    background: #3e3e50;
+}
+
+.user-table .edit {
+    color: #45f3ff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.user-table .edit:hover {
+    text-decoration: underline;
+}
+
+.user-table .delete {
+    padding: 5px 10px;
+    color: #fff;
+    background: #ff2770;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-table .delete:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 10px #ff4d88, 0 0 20px #ff4d88;
+}

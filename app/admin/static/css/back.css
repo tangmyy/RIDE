@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #25252b;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    text-align: center;
+    max-width: 500px;
+    background: #2d2d39;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.container h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #45f3ff;
+    text-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}
+
+.container p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #bbb;
+}
+
+.container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.container ul li {
+    margin: 10px 0;
+}
+
+.container ul li a {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ff2770;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770;
+    transition: all 0.3s ease;
+}
+
+.container ul li a:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 15px #ff4d88, 0 0 40px #ff4d88;
+}
+
+@property --a {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+.box {
+    position: relative;
+    width: 450px;
+    height: 450px;
+    background: repeating-conic-gradient(from var(--a), #45f3ff 0%, #45f3ff 5%, transparent 5%, transparent 40%, #45f3ff 50%);
+    filter: drop-shadow(0 15px 50px #000);
+    border-radius: 20px;
+    animation: rotating 4s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+
+@keyframes rotating {
+    0% {
+        --a: 0deg;
+    }
+    100% {
+        --a: 360deg;
+    }
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-conic-gradient(from var(--a), #ff2770 0%, #ff2770 5%, transparent 5%, transparent 40%, #ff2770 50%);
+    filter: drop-shadow(0 15px 50px #000);
+    border-radius: 20px;
+    animation: rotating 4s linear infinite;
+    animation-delay: -1s;
+}
+
+.box::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: #2d2d39;
+    border-radius: 15px;
+    border: 8px solid #25252b;
+}
+
+.home {
+    position: absolute;
+    inset: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
+    z-index: 1000;
+}
+
+.home h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.home p {
+    font-size: 1.2em;
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+.img-container {
+    margin: 20px 0;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 5px solid #45f3ff;
+    box-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logout {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #ff2770;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.logout:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770;
+}
+
