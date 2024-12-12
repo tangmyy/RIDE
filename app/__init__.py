@@ -6,7 +6,6 @@ from flask import Flask, redirect
 from .db_utils import User
 from .extensions import bcrypt, login_manager
 
-
 # 从软件包中 导入Blueprint蓝图对象
 from .auth import auth
 from .admin import admin
@@ -36,8 +35,8 @@ def create_app():
 
     return app
 
+
 @login_manager.user_loader
 def load_user(user_id):
     """Flask-Login 加载用户回调"""
     return User.get_user_by_id(user_id)
-

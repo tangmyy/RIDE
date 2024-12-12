@@ -11,12 +11,15 @@ from . import admin
 # 自定义管理员权限装饰器
 def admin_required(f):
     """仅允许管理员访问"""
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_admin:  # is_admin 字段
             abort(403)  # 禁止访问
         return f(*args, **kwargs)
+
     return decorated_function
+
 
 # 管理后台首页
 @admin.route('/dashboard')
@@ -25,6 +28,7 @@ def admin_required(f):
 def dashboard():
     """管理员首页，显示系统的基本信息"""
     return render_template('back.html')
+
 
 # 用户管理页面
 @admin.route('/users', methods=['GET', 'POST'])
@@ -36,12 +40,14 @@ def select_users():
     users = User.get_all_non_admin_users()
     return render_template('select_users.html', users=users)
 
+
 # 新增用户页面
 @admin.route('/users/add')
 @login_required
 @admin_required  # 仅允许管理员访问
 def add():
     return render_template('add_user.html')
+
 
 # 编辑用户页面
 @admin.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
@@ -62,6 +68,7 @@ def edit_user(user_id):
 
     return render_template('update_user.html', user=user)
 
+
 # 删除用户功能
 @admin.route('/users/delete/<int:user_id>', methods=['POST'])
 @login_required
@@ -72,6 +79,7 @@ def delete_user(user_id):
     User.delete_user(user_id)
     flash('用户已成功删除！', 'info')
     return redirect(url_for('admin.select_users'))
+
 
 @admin.route('/users/add', methods=['GET', 'POST'])
 @login_required
@@ -99,8 +107,3 @@ def add_user():
         return redirect(url_for('admin.select_users'))
 
     return render_template('add_user.html')
-
-
-
-
-
