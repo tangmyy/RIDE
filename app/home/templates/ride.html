@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆展示</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>车辆展示页面</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>品牌</th>
+                <th>类型</th>
+                <th>价格</th>
+                <th>描述</th>
+                <th>是否上架</th>
+                <th>是否租赁</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <td>{{ car.car_id }}</td>
+                <td>{{ car.car_name }}</td>
+                <td>{{ car.brand_name }}</td>
+                <td>{{ car.type_name }}</td>
+                <td>{{ car.price }}</td>
+                <td>{{ car.description }}</td>
+                <td>{{ '是' if car.is_on_shelf else '否' }}</td>
+                <td>{{ '是' if car.is_rented else '否' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

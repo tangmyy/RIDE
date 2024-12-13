@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索车辆</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>搜索车辆</h1>
+
+    <!-- 搜索表单 -->
+    <form method="POST" action="{{ url_for('manage.search_cars') }}">
+        <input type="text" name="search_query" value="{{ search_query }}" placeholder="请输入车辆名称、品牌或类型">
+        <button type="submit">搜索</button>
+    </form>
+
+    <!-- 显示搜索结果 -->
+    {% if cars %}
+        <h2>搜索结果：</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>车辆名称</th>
+                    <th>品牌</th>
+                    <th>类型</th>
+                    <th>价格</th>
+                    <th>描述</th>
+                    <th>是否上架</th>
+                    <th>是否租赁</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                    <tr>
+                        <td>{{ car.car_id }}</td>
+                        <td>{{ car.car_name }}</td>
+                        <td>{{ car.brand_name }}</td>
+                        <td>{{ car.type_name }}</td>
+                        <td>{{ car.price }}</td>
+                        <td>{{ car.description }}</td>
+                        <td>{{ '是' if car.is_on_shelf else '否' }}</td>
+                        <td>{{ '是' if car.is_rented else '否' }}</td>
+                        <td>
+                            <!-- 删除表单 -->
+                            <form method="POST" action="{{ url_for('manage.delete_car_route', car_id=car.car_id) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('确定要删除这辆车吗？');">删除</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% if search_query %}
+            <p>未找到匹配的车辆。</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
