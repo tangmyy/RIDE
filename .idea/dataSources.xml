@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="users [2]" uuid="89b2f462-bbea-41d5-81c7-4f8609ee306f">
+    <data-source source="LOCAL" name="users" uuid="fa696f2e-124b-47d7-ac06-6056530150a3">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:F:\java_app\flask\RIDE\users.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\Administrator\Documents\GitHub\RIDE\users.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
@@ -13,6 +13,9 @@
         </library>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar</url>
+        </library>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/sqlite-jdbc-3.34.0.jar</url>
         </library>
       </libraries>
     </data-source>

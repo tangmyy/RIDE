@@ -39,8 +39,8 @@ def init_db():
            )''')
         # 添加 description 列到 cars 表
         cursor.execute('''
-               ALTER TABLE cars ADD COLUMN description TEXT
-               ''')
+                       ALTER TABLE cars ADD COLUMN description TEXT
+                       ''')
 
         print("描述列已添加到 cars 表中")
         # 创建 car_images 表

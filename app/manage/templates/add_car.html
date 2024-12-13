@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Car</title>
+</head>
+<body>
+    <h1>添加车辆</h1>
+    <form action="{{ url_for('manage.add_car_route') }}" method="POST" enctype="multipart/form-data">
+        <label for="car_name">车辆名称：</label>
+        <input type="text" id="car_name" name="car_name" required><br>
+
+        <label for="brand_name">品牌：</label>
+        <input type="text" id="brand_name" name="brand_name" required><br>
+
+        <label for="type_name">类型：</label>
+        <input type="text" id="type_name" name="type_name" required><br>
+
+        <label for="price">价格：</label>
+        <input type="number" id="price" name="price" required><br>
+
+        <label for="is_on_shelf">是否上架：</label>
+        <input type="radio" id="is_on_shelf_yes" name="is_on_shelf" value="1" checked> 是
+        <input type="radio" id="is_on_shelf_no" name="is_on_shelf" value="0"> 否<br>
+
+        <label for="is_rented">是否租赁中：</label>
+        <input type="radio" id="is_rented_yes" name="is_rented" value="1"> 是
+        <input type="radio" id="is_rented_no" name="is_rented" value="0" checked> 否<br>
+
+        <label for="description">描述：</label>
+        <textarea id="description" name="description"></textarea><br>
+
+        <label for="images">上传图片：</label>
+        <input type="file" id="images" name="images" multiple><br>
+
+        <button type="submit">添加车辆</button>
+    </form>
+</body>
+</html>
