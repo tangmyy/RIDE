@@ -2,7 +2,9 @@ import sqlite3
 
 from flask import render_template, request, jsonify, flash, redirect, url_for
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
+from run import app
 from . import manage_bp
 from app.cars_db import add_car, get_all_cars, get_car_by_id, delete_car, update_car, get_cars_by_query
 from app.images_db import add_image, save_vehicle_image, fetch_images_by_vehicle_id, fetch_vehicle_by_id, \
@@ -12,6 +14,7 @@ import os
 
 from ..users_db import get_all_users, add_user_to_db, DATABASE, delete_user, get_user_by_id, get_users_by_query
 
+CORS(app, supports_credentials=True)
 # 定义上传目录
 UPLOAD_FOLDER = os.path.join('app', 'manage', 'static', 'images')
 # 图片上传目录
