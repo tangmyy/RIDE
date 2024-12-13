@@ -12,11 +12,12 @@
             <h1>欢迎, {{ username }}!</h1>
             <p>您已成功登录。</p>
             <div class="img-container">
-                <img src="{{ url_for('static', filename='images/zx-flask.jpg') }}" alt="示例图片">
+                <img src="{{ url_for('static', filename='images/zx-flask.jpg') }}" alt="示例图片" width="100">
             </div>
 
             <a href="{{ url_for('alipay.place_order', subtotal=10) }}" class="logout">支付测试</a>
-            <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fa-solid fa-sign-out-alt"></i> 退出登录</a>
+            <a href="{{ url_for('auth.ride') }}" class="logout">查看车辆</a> <!-- 新增按钮 -->
+            <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fa-solid fa-sign-out-alt"></i>退出登录</a>
         </div>
     </div>
 </body>

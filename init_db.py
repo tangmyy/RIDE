@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from app import bcrypt
+
 
 # 定义数据库路径（确保指向 app/users.db）
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

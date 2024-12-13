@@ -1,6 +1,5 @@
 import sqlite3
 
-# 定义数据库文件路径
 DATABASE = 'users.db'
 
 
@@ -11,15 +10,6 @@ def get_all_cars():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM cars")
         return cursor.fetchall()
-
-
-def get_car_by_id(car_id):
-    """根据车辆 ID 获取车辆信息"""
-    with sqlite3.connect(DATABASE) as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM cars WHERE car_id = ?", (car_id,))
-        return cursor.fetchone()
 
 
 def add_car(car_name, brand_name, type_name, price, description, is_on_shelf=True, is_rented=False):

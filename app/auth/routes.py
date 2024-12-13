@@ -4,6 +4,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.db_utils import User
 
 from . import auth  # 导入蓝图实例
+from ..cars_db import get_all_cars
+from ..images_db import get_first_image_by_car_id
 
 
 @auth.route('/', methods=['GET', 'POST'])
@@ -37,4 +39,16 @@ def logout():
     """注销用户"""
     logout_user()
     return redirect(url_for('auth.login'))
+@auth.route('/ride')
+def ride():
+    """展示所有车辆信息及其第一张图片"""
+    cars = get_all_cars()  # 获取所有车辆信息
+    cars_with_images = []  # 存储带图片信息的车辆数据
+
+    for car in cars:
+        car_dict = dict(car)  # 将 sqlite3.Row 转换为普通字典
+        car_dict['image_path'] = get_first_image_by_car_id(car_dict['car_id'])  # 添加图片路径
+        cars_with_images.append(car_dict)
+
+    return render_template('ride.html', cars=cars_with_images)
 
