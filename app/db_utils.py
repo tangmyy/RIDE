@@ -9,6 +9,7 @@ DATABASE = 'users.db'
 # 配置日志记录
 logger = logging.getLogger(__name__)
 
+
 class User(UserMixin):
     def __init__(self, id, username, password, is_admin):
         self.id = id
@@ -78,7 +79,6 @@ class User(UserMixin):
                 (username, password, 0)  # 新增用户默认不是管理员
             )
             conn.commit()
-
 
 
 class Order:

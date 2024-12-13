@@ -3,6 +3,7 @@ import secrets
 
 from flask import Flask, redirect
 
+from .auth.routes import home
 from .db_utils import User
 from .extensions import bcrypt, login_manager
 
@@ -11,6 +12,9 @@ from .extensions import bcrypt, login_manager
 from .auth import auth
 from .admin import admin
 from .alipay import alipay_bp
+from .home import home_bp
+from .home.routes import ride
+from .manage import manage_bp
 
 
 def create_app():
@@ -28,6 +32,8 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(alipay_bp, url_prefix='/alipay')
+    app.register_blueprint(home_bp, url_prefix='/home')
+    app.register_blueprint(manage_bp, url_prefix='/manage')
 
     # 添加根路径重定向
     @app.route('/')
