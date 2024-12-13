@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆信息</title>
+    <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/ride.css') }}">
+</head>
+<body>
+    <h1>所有车辆信息</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>品牌</th>
+                <th>类型</th>
+                <th>价格</th>
+                <th>描述</th>
+                <th>图片</th>
+                <th>是否上架</th>
+                <th>是否租赁</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <td>{{ car.car_id }}</td>
+                <td>{{ car.car_name }}</td>
+                <td>{{ car.brand_name }}</td>
+                <td>{{ car.type_name }}</td>
+                <td>{{ car.price }}</td>
+                <td>{{ car.description }}</td>
+                <td>
+                    {% if car.image_path %}
+                    <img src="{{ url_for('static', filename=car.image_path) }}" alt="图片" width="100">
+                    {% else %}
+                    无图片
+                    {% endif %}
+                </td>
+                <td>{{ '是' if car.is_on_shelf else '否' }}</td>
+                <td>{{ '是' if car.is_rented else '否' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('auth.home') }}">返回主页</a>
+</body>
+</html>

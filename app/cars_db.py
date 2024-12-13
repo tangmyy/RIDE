@@ -68,3 +68,4 @@ def update_car(car_id, **kwargs):
             WHERE id = ?
         ''', values)
         conn.commit()
+

@@ -3,12 +3,39 @@ import os
 from werkzeug.utils import secure_filename
 
 DATABASE = 'users.db'
-UPLOAD_FOLDER = 'app/manage/static/images'
+UPLOAD_FOLDER = 'app/static/ride'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # 确保上传目录存在
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
+
+def get_first_image_by_car_id(car_id):
+    """获取指定车辆的第一张图片路径"""
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT image_path FROM car_images 
+            WHERE car_id = ? 
+            ORDER BY image_id LIMIT 1
+        ''', (car_id,))
+        result = cursor.fetchone()
+        return result['image_path'] if result else None
+
+
+def get_images_by_car_id(car_id):
+    """获取指定车辆的所有图片路径"""
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT image_path FROM car_images 
+            WHERE car_id = ? 
+            ORDER BY image_id
+        ''', (car_id,))
+        return [row['image_path'] for row in cursor.fetchall()]
 
 
 def allowed_file(filename):
@@ -37,7 +64,7 @@ def save_vehicle_image(vehicle_id, image_file):
     # 确保文件名安全
     filename = secure_filename(image_file.filename)
     # 设置相对路径（数据库中存储的路径）
-    relative_path = f'manage/static/images/{filename}'
+    relative_path = f'ride/{filename}'
     # 设置文件系统中的完整路径
     image_path = os.path.join(UPLOAD_FOLDER, filename)
 
@@ -68,6 +95,7 @@ def fetch_vehicle_by_id(vehicle_id):
             SELECT * FROM cars WHERE car_id = ?
         ''', (vehicle_id,))
         return cursor.fetchone()  # 返回单条记录
+
 
 def fetch_images_by_vehicle_id(vehicle_id):
     """
@@ -124,4 +152,3 @@ def delete_vehicle_image(image_id):
             conn.commit()
         else:
             print(f"图片 ID {image_id} 未找到。")
-

@@ -13,7 +13,8 @@ import os
 from ..users_db import get_all_users, add_user_to_db, DATABASE, delete_user, get_user_by_id, get_users_by_query
 
 # 定义上传目录
-UPLOAD_FOLDER = os.path.join('app', 'manage', 'static', 'images')
+UPLOAD_FOLDER = os.path.join('app', 'static', 'ride')
+UPLOAD_FOLDER_1 = os.path.join('ride')
 # 图片上传目录
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -21,9 +22,9 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 
 # 显示车辆管理页面
@@ -66,12 +67,13 @@ def add_car_route():
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
                 image_path = os.path.join(UPLOAD_FOLDER, filename)
+                image_path_1 = os.path.join(UPLOAD_FOLDER_1, filename).replace("\\", "/")  # 替换反斜杠为斜杠
                 if not os.path.exists(UPLOAD_FOLDER):
                     os.makedirs(UPLOAD_FOLDER)
                 image.save(image_path)  # 保存图片到目录
 
                 # 添加图片信息到数据库
-                add_image(car_id, image_path)
+                add_image(car_id, image_path_1)
             else:
                 invalid_files.append(image.filename)
 
@@ -85,6 +87,7 @@ def add_car_route():
         return render_template('add_car.html', success_message="车辆和图片成功添加！")
 
     return render_template('add_car.html')
+
 
 @manage_bp.route('/cars/search', methods=['GET', 'POST'])
 def search_cars():
@@ -146,10 +149,12 @@ def edit_car_route(car_id):
             return jsonify({'error': 'All fields except "description" are required.'}), 400
 
         # 更新车辆信息
-        update_car(car_id, car_name=car_name, brand_name=brand_name, type_name=type_name, price=float(price), description=description)
+        update_car(car_id, car_name=car_name, brand_name=brand_name, type_name=type_name, price=float(price),
+                   description=description)
         return jsonify({'message': 'Car updated successfully!'}), 200
     except Exception as e:
         return jsonify({'error': f"An error occurred: {str(e)}"}), 500
+
 
 @manage_bp.route('/users', methods=['GET'])
 def view_users():
@@ -184,6 +189,7 @@ def add_user():
         return redirect(url_for('manage.view_users'))
 
     return render_template('add_user.html')
+
 
 @manage_bp.route('/users/search', methods=['GET', 'POST'])
 def search_users():
@@ -225,6 +231,7 @@ def delete_user_route(user_id):
         # 记录日志或返回简单错误页面
         print(f"删除用户时发生错误：{str(e)}")  # 使用日志记录错误
         return redirect(url_for('manage.search_users', error_message='删除用户时发生错误。'))
+
 
 @manage_bp.route('/vehicles/<int:vehicle_id>', methods=['GET', 'POST'])
 def vehicle_details(vehicle_id):
@@ -269,6 +276,7 @@ def delete_images_by_vehicle(vehicle_id):
 
     # 删除后刷新车辆详情页面
     return redirect(url_for('manage.vehicle_details', vehicle_id=vehicle_id))
+
 
 @manage_bp.route('/images/delete/<int:image_id>', methods=['POST'])
 def delete_image(image_id):

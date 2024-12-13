@@ -16,6 +16,7 @@
             </div>
 
             <a href="{{ url_for('alipay.place_order', subtotal=10) }}" class="logout">支付测试</a>
+            <a href="{{ url_for('auth.ride') }}" class="logout">查看车辆</a> <!-- 新增按钮 -->
             <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fa-solid fa-sign-out-alt"></i> 退出登录</a>
         </div>
     </div>
