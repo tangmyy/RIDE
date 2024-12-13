@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆详情</title>
+</head>
+<body>
+    {% if vehicle %}
+        <h1>车辆详情</h1>
+        <p>车辆 ID: {{ vehicle.car_id }}</p>
+        <p>名称: {{ vehicle.car_name }}</p>
+        <p>品牌: {{ vehicle.brand_name }}</p>
+        <p>类型: {{ vehicle.type_name }}</p>
+        <p>价格: {{ vehicle.price }}</p>
+        <p>描述: {{ vehicle.description }}</p>
+        <p>是否上架: {{ '是' if vehicle.is_on_shelf else '否' }}</p>
+        <p>是否租赁中: {{ '是' if vehicle.is_rented else '否' }}</p>
+
+        <h2>图片列表</h2>
+        {% if vehicle_images %}
+            <ul>
+                {% for image in vehicle_images %}
+                    <li>
+                        <img src="{{ url_for('static', filename=image.image_path) }}" alt="车辆图片" width="200">
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>暂无图片。</p>
+        {% endif %}
+
+        <h2>上传新图片</h2>
+        <form action="{{ url_for('manage.vehicle_details', vehicle_id=vehicle.car_id) }}" method="POST" enctype="multipart/form-data">
+            <label for="new_images">选择图片：</label>
+            <input type="file" id="new_images" name="new_images" multiple>
+            <button type="submit">上传图片</button>
+        </form>
+
+
+    {% else %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>

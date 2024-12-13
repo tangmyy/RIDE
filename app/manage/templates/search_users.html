@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查询与删除用户</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>查询与删除用户</h1>
+
+        <!-- 查询表单 -->
+        <form method="POST" action="{{ url_for('manage.search_users') }}">
+            <input type="text" name="search_query" placeholder="请输入用户名" required>
+            <button type="submit">查询</button>
+        </form>
+
+        <!-- 查询结果 -->
+        {% if users %}
+        <h2>查询结果</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>是否管理员</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ '是' if user.is_admin else '否' }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('manage.delete_user_route', user_id=user.id) }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('确定要删除用户 {{ user.username }} 吗？');">删除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% elif search_query %}
+        <p>未找到匹配的用户。</p>
+        {% endif %}
+    </div>
+</body>
+</html>

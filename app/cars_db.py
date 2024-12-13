@@ -26,19 +26,32 @@ def get_all_cars():
 
 
 def get_car_by_id(car_id):
-    """根据车辆 ID 获取车辆信息"""
+    """根据车辆ID获取车辆信息"""
     with sqlite3.connect(DATABASE) as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM cars WHERE id = ?', (car_id,))
+        cursor.execute('SELECT * FROM cars WHERE car_id = ?', (car_id,))
         return cursor.fetchone()
 
+
+def get_cars_by_query(query):
+    """
+    根据搜索关键词模糊查询车辆
+    """
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT * FROM cars
+            WHERE car_name LIKE ? OR brand_name LIKE ? OR type_name LIKE ?
+        ''', (f'%{query}%', f'%{query}%', f'%{query}%'))
+        return cursor.fetchall()
 
 def delete_car(car_id):
     """删除指定车辆"""
     with sqlite3.connect(DATABASE) as conn:
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM cars WHERE id = ?', (car_id,))
+        cursor.execute('DELETE FROM cars WHERE car_id = ?', (car_id,))
         conn.commit()
 
 

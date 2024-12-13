@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>删除车辆图片</title>
+</head>
+<body>
+    {% if vehicle %}
+        <h1>删除 {{ vehicle.car_name }} 的图片</h1>
+        <p>车辆 ID: {{ vehicle.car_id }}</p>
+
+        <h2>图片列表</h2>
+        {% if vehicle_images %}
+            <ul>
+                {% for image in vehicle_images %}
+                    <li>
+                        <img src="{{ url_for('static', filename=image.image_path.replace('app/manage/static/', '')) }}" alt="车辆图片" width="200">
+                        <form action="{{ url_for('manage.delete_image', image_id=image.image_id) }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('确定要删除此图片吗？');">删除图片</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>暂无图片。</p>
+        {% endif %}
+    {% else %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>
