@@ -52,13 +52,15 @@ from app.cars_db import get_price_range
 @login_required
 def ride():
     """
-    车辆信息页面，支持搜索、品牌筛选、车型筛选、价格排序和价格区间筛选功能
+    车辆信息页面，支持搜索、品牌筛选、车型筛选、价格排序、价格区间筛选、是否公开筛选和是否出租筛选功能
     """
     selected_brand = None  # 存储选择的品牌
     selected_type = None  # 存储选择的车型
     sort_order = None  # 存储价格排序选项
     min_price = None  # 最低价格筛选
     max_price = None  # 最高价格筛选
+    is_public = None  # 是否公开筛选
+    is_rented = None  # 是否出租筛选
 
     if request.method == 'POST':
         search_query = request.form.get('search_query', '').strip()
@@ -67,6 +69,8 @@ def ride():
         sort_order = request.form.get('sort_order', None)
         min_price = request.form.get('min_price', None)
         max_price = request.form.get('max_price', None)
+        is_public = request.form.get('is_public', None)
+        is_rented = request.form.get('is_rented', None)
 
         # 根据搜索和筛选条件获取车辆
         cars = get_cars_by_query(search_query) if search_query else get_all_cars()
@@ -78,6 +82,10 @@ def ride():
             cars = [car for car in cars if car['price'] >= float(min_price)]
         if max_price:
             cars = [car for car in cars if car['price'] <= float(max_price)]
+        if is_public and is_public != "all":
+            cars = [car for car in cars if car['is_on_shelf'] == (is_public == "1")]
+        if is_rented and is_rented != "all":
+            cars = [car for car in cars if car['is_rented'] == (is_rented == "1")]
 
         # 按价格排序
         if sort_order == "asc":
@@ -109,7 +117,9 @@ def ride():
         selected_type=selected_type,
         sort_order=sort_order,
         min_price=min_price,
-        max_price=max_price
+        max_price=max_price,
+        is_public=is_public,
+        is_rented=is_rented
     )
 
 
