@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from . import manage_bp
 from app.cars_db import add_car, get_all_cars, get_car_by_id, delete_car, update_car, get_cars_by_query
 from app.images_db import add_image, save_vehicle_image, fetch_images_by_vehicle_id, fetch_vehicle_by_id, \
-    delete_images_by_car_id, delete_vehicle_image
+    delete_images_by_car_id, delete_vehicle_image, get_first_image_by_car_id
 
 import os
 
@@ -30,9 +30,17 @@ def allowed_file(filename):
 # 显示车辆管理页面
 @manage_bp.route('/cars')
 def view_cars():
-    """显示所有车辆"""
+    """显示所有车辆，并为每辆车附加第一张图片"""
     cars = get_all_cars()
-    return render_template('manage_cars.html', cars=cars)
+
+    # 将 sqlite3.Row 转换为字典，并附加图片路径
+    cars_with_images = []
+    for car in cars:
+        car_dict = dict(car)  # 将 sqlite3.Row 转换为字典
+        car_dict['image_path'] = get_first_image_by_car_id(car_dict['car_id'])  # 添加图片路径
+        cars_with_images.append(car_dict)
+
+    return render_template('manage_cars.html', cars=cars_with_images)
 
 
 @manage_bp.route('/cars/add', methods=['GET', 'POST'])
@@ -89,27 +97,21 @@ def add_car_route():
     return render_template('add_car.html')
 
 
-@manage_bp.route('/cars/search', methods=['GET', 'POST'])
+@manage_bp.route('/cars/search', methods=['GET'])
 def search_cars():
     """
-    模糊查询车辆
+    根据搜索关键词返回匹配的车辆信息（JSON 格式）
     """
-    search_query = ''
-    cars = []  # 初始化空的车辆列表
+    query = request.args.get('query', '').strip()
+    cars = []
 
-    if request.method == 'POST':
-        search_query = request.form.get('search_query', '').strip()
+    if query:
+        cars = get_cars_by_query(query)
+    else:
+        cars = get_all_cars()
 
-        # 检查查询条件是否为空
-        if not search_query:
-            flash('请输入搜索关键词！', 'error')
-            return render_template('search_cars.html', cars=[], search_query='')
+    return jsonify({'cars': [dict(car) for car in cars]})
 
-        # 调用 get_cars_by_query 获取匹配的车辆信息
-        cars = get_cars_by_query(search_query)
-
-    # 无论 GET 或 POST 请求，都返回结果页面
-    return render_template('search_cars.html', cars=cars, search_query=search_query)
 
 
 @manage_bp.route('/cars/delete/<int:car_id>', methods=['POST'])
@@ -117,19 +119,16 @@ def delete_car_route(car_id):
     """
     删除指定车辆
     """
-    # 检查车辆是否存在
     car = get_car_by_id(car_id)
     if not car:
-        return redirect(url_for('manage.search_cars', error_message='车辆未找到！'))
+        return jsonify({'error': '车辆未找到'}), 404
 
     try:
-        # 删除车辆及其关联的图片
         delete_car(car_id)
-        return redirect(url_for('manage.search_cars', success_message='车辆成功删除！'))
+        return jsonify({'message': '车辆已成功删除'}), 200
     except Exception as e:
-        # 记录日志或返回简单错误页面
-        print(f"删除车辆时发生错误：{str(e)}")  # 使用日志记录错误
-        return redirect(url_for('manage.search_cars', error_message='删除车辆时发生错误。'))
+        return jsonify({'error': str(e)}), 500
+
 
 
 @manage_bp.route('/cars/edit/<int:car_id>', methods=['PUT'])

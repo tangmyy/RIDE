@@ -11,9 +11,12 @@
         <h1>欢迎来到管理员后台</h1>
         <p>这是管理后台的首页</p>
         <ul>
-            <li><a href="{{ url_for('admin.select_users') }}" class="logout" >用户管理</a></li>
-            <li><a href="{{ url_for('admin.add') }}" class="logout" >新增用户</a></li>
-            <li><a href="{{ url_for('auth.logout') }}" class="logout" ><i class="fa-solid fa-sign-out-alt"></i> 退出登录</a></li>
+            <li><a href="{{ url_for('admin.select_users') }}" class="logout">用户管理</a></li>
+            <li><a href="{{ url_for('admin.add') }}" class="logout">新增用户</a></li>
+            <li><a href="{{ url_for('manage.add_car_route') }}" class="logout">租车信息上传</a></li>
+            <li><a href="{{ url_for('manage.view_cars') }}" class="logout">租车信息显示</a></li>
+            <li><a href="{{ url_for('manage.search_cars') }}" class="logout">租车信息查询</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" class="logout"><i class="fa-solid fa-sign-out-alt"></i> 退出登录</a></li>
         </ul>
     </div>
 </body>
