@@ -50,7 +50,82 @@ def init_db():
         cursor.execute("INSERT OR IGNORE INTO users (username, password, is_admin) VALUES ('zhangxing', '2220677', 0)")
         cursor.execute("INSERT OR IGNORE INTO users (username, password, is_admin) VALUES ('cjcj', '2220678', 0)")
         conn.commit()
+        # 插入数据
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('GPR250', 'Aprilia', '仿赛', 320.00, 1, 0, '250级别纯正仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('RS660', 'Aprilia', '仿赛', 350.00, 1, 0, '赛道操控顶级性能')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('RSV4', 'Aprilia', '仿赛', 450.00, 1, 0, '无敌公升赛道级')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('S1000RR', 'BMW', '仿赛', 750.00, 1, 0, '赛道级高性能仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('F900R', 'BMW', '街车', 500.00, 1, 0, '动力强劲的街车')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('R1250GS', 'BMW', 'ADV', 800.00, 1, 0, '全球经典越野车型')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Panigale V4', 'Ducati', '仿赛', 800.00, 1, 0, '旗舰级仿赛性能标杆')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Monster 1200', 'Ducati', '街车', 650.00, 1, 0, '街道骑行的经典之作')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Multistrada V4', 'Ducati', 'ADV', 750.00, 1, 0, '多功能的长途骑行神器')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('CBR600RR', 'Honda', '仿赛', 600.00, 1, 0, '平衡性能与易操控性')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('CB500F', 'Honda', '街车', 350.00, 1, 0, '经济实用街车')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Africa Twin', 'Honda', 'ADV', 700.00, 1, 0, '长途冒险经典')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('RC 390', 'KTM', '仿赛', 300.00, 1, 0, '轻量化仿赛性能强劲')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Duke 790', 'KTM', '街车', 420.00, 1, 0, '灵活轻巧，动力强劲')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('1290 Super Adventure', 'KTM', 'ADV', 800.00, 1, 0, '顶级ADV越野')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Ninja ZX-10R', 'Kawasaki', '仿赛', 700.00, 1, 0, '高性能仿赛之选')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Z900', 'Kawasaki', '街车', 350.00, 1, 0, '街头骑行性能首选')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Versys 1000', 'Kawasaki', 'ADV', 450.00, 1, 0, '多功能冒险骑行')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('GSX-R750', 'Suzuki', '仿赛', 600.00, 1, 0, '经典仿赛，速度与操控平衡')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('SV650', 'Suzuki', '街车', 320.00, 1, 0, '经济实用型街车')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('V-Strom 1050', 'Suzuki', 'ADV', 750.00, 1, 0, '舒适的长途旅行ADV')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('YZF-R1', 'Yamaha', '仿赛', 650.00, 1, 0, '速度与操控的完美结合')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('MT-07', 'Yamaha', '街车', 300.00, 1, 0, '街头骑行灵活轻便')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('Tracer 900', 'Yamaha', 'ADV', 500.00, 1, 0, '舒适稳定，长途旅行必备')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('800NK', '春风', '街车', 320.00, 1, 0, '国内街车高性能代表')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('650MT', '春风', 'ADV', 380.00, 1, 0, '长途骑行稳定耐用')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('300SR', '春风', '仿赛', 250.00, 1, 0, '入门级轻量仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('T310', '升仕', '街车', 300.00, 1, 0, '精致设计，灵活实用')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('T380', '升仕', '仿赛', 350.00, 1, 0, '时尚动感仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('T510', '升仕', 'ADV', 450.00, 1, 0, '强劲动力，适合越野旅行')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('500R', '无极', '街车', 300.00, 1, 0, '简洁实用的城市街车')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('500RR', '无极', '仿赛', 340.00, 1, 0, '国产高性价比仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('650ADV', '无极', 'ADV', 450.00, 1, 0, '舒适可靠，长途旅行首选')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('QJ600', '钱江', '街车', 310.00, 1, 0, '国产高性价比街车')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('QJ600GS', '钱江', '仿赛', 340.00, 1, 0, '入门级仿赛')")
+        cursor.execute(
+            "INSERT OR IGNORE INTO cars (car_name, brand_name, type_name, price, is_on_shelf, is_rented, description) VALUES ('QJ700ADV', '钱江', 'ADV', 400.00, 1, 0, '高性能冒险ADV')")
 
+        # 提交更改
+        conn.commit()
         # 插入管理员用户
         cursor.execute("INSERT OR IGNORE INTO users (username, password, is_admin) VALUES ('admin', '123', 1)")
         conn.commit()

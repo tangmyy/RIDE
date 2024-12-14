@@ -4,53 +4,7 @@
     <meta charset="UTF-8">
     <title>车辆详细信息</title>
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/car_details.css') }}">
-    <style>
-        .details-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
 
-        .details-container img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        .details-container h1 {
-            margin-top: 0;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .details-container p {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #555;
-        }
-
-        .pay-button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .pay-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
     <div class="details-container">
@@ -62,16 +16,17 @@
         <p><strong>是否上架:</strong> {{ '是' if car.is_on_shelf else '否' }}</p>
         <p><strong>是否租赁:</strong> {{ '是' if car.is_rented else '否' }}</p>
 
-        {% if images %}
-        <div>
-            <h3>图片:</h3>
-            {% for image in images %}
-            <img src="{{ url_for('static', filename=image['image_path']) }}" alt="图片">
-            {% endfor %}
-        </div>
-        {% else %}
-        <p>暂无图片</p>
-        {% endif %}
+        <!-- 显示所有图片 -->
+       {% if images %}
+    <div class="images-container">
+        {% for image_path in images %}
+            <img src="{{ url_for('static', filename=image_path) }}" alt="{{ car.car_name }}">
+        {% endfor %}
+    </div>
+{% else %}
+    <p>暂无图片</p>
+{% endif %}
+
 
         <!-- 支付按钮 -->
         <a href="{{ url_for('alipay.place_order', subtotal=car.price) }}" class="pay-button">支付 ¥{{ car.price }}</a>
