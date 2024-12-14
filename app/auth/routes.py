@@ -5,7 +5,7 @@ from app.db_utils import User
 
 from . import auth  # 导入蓝图实例
 from ..cars_db import get_all_cars, get_car_by_id, get_cars_by_query, get_unique_brands
-from ..images_db import get_first_image_by_car_id, fetch_images_by_vehicle_id
+from ..images_db import get_first_image_by_car_id, fetch_images_by_vehicle_id, get_images_by_car_id
 
 
 @auth.route('/', methods=['GET', 'POST'])
@@ -123,17 +123,15 @@ def ride():
     )
 
 
-
-@auth.route('/car/<int:car_id>', methods=['GET'])
+@auth.route('/ride/<int:car_id>', methods=['GET'])
 @login_required
 def car_details(car_id):
-    """
-    显示指定车辆的详细信息
-    """
+    """显示指定车辆的详细信息"""
     car = get_car_by_id(car_id)
     if not car:
-        flash("车辆不存在！", "error")
-        return redirect(url_for('auth.home'))
+        flash("未找到车辆信息！", "error")
+        return redirect(url_for('auth.ride'))
 
-    images = fetch_images_by_vehicle_id(car_id)  # 获取该车辆的所有图片
+    images = get_images_by_car_id(car_id)  # 获取车辆的所有图片
+
     return render_template('car_details.html', car=car, images=images)

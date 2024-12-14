@@ -92,33 +92,29 @@
 
     <h1 style="text-align: center;">我的愿望单</h1>
 
-    {% if wishlist %}
-    <div class="container">
-        {% for car in wishlist %}
-        <div class="card">
-            {% if car.image_path %}
-            <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
-            {% else %}
-            <img src="{{ url_for('wishlist.static', filename='images/no_image_available.png') }}" alt="无图片">
-            {% endif %}
-            <div class="content">
-                <h3>{{ car.car_name }}</h3>
-                <p>{{ car.description or '无描述' }}</p>
-                <p class="price">价格: ¥{{ car.price }}</p>
-
-                <!-- 移除愿望单按钮 -->
-                <form method="post" action="{{ url_for('wishlist.remove_wishlist', car_id=car.car_id) }}" style="margin-top: 10px;">
-                    <button type="submit" class="wishlist-button">移除</button>
-                </form>
-            </div>
+{% if wishlist %}
+<div class="container">
+    {% for car in wishlist %}
+    <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
+        {% if car.image_path %}
+        <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
+        {% else %}
+        <img src="{{ url_for('wishlist.static', filename='images/no_image_available.png') }}" alt="无图片">
+        {% endif %}
+        <div class="content">
+            <h3>{{ car.car_name }}</h3>
+            <p>{{ car.description or '无描述' }}</p>
+            <p class="price">价格: ¥{{ car.price }}</p>
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div style="text-align: center; margin-top: 50px; font-size: 18px; color: #888;">
-        哎哟，您的愿望单是空的！
-    </div>
-    {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; margin-top: 50px; font-size: 18px; color: #888;">
+    哎哟，您的愿望单是空的！
+</div>
+{% endif %}
+
 
     <a href="{{ url_for('auth.ride') }}" style="display: block; text-align: center; margin-top: 20px;">返回车辆页面</a>
 </body>

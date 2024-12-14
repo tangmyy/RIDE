@@ -9,10 +9,19 @@ from app.wishlist_db import add_to_wishlist, remove_from_wishlist, get_wishlist_
 @login_required
 def view_wishlist():
     """显示当前用户的愿望单"""
-    wishlist = get_wishlist_by_user(current_user.id)
+    wishlist_rows = get_wishlist_by_user(current_user.id)
+
+    # 转换 sqlite3.Row 为字典，并处理图片路径
+    wishlist = []
+    for row in wishlist_rows:
+        car = dict(row)  # 转换为字典
+        if car.get('image_path'):  # 如果存在图片路径
+            car['image_path'] = f"{car['image_path']}"  # 拼接静态路径
+        else:
+            car['image_path'] = "ride/no_image_available.png"  # 默认图片路径
+        wishlist.append(car)
 
     return render_template('wishlist.html', wishlist=wishlist)
-
 
 
 @wishlist_bp.route('/wishlist/add/<int:car_id>', methods=['POST'])

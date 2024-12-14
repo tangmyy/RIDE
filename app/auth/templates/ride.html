@@ -64,25 +64,22 @@
     </form>
 
     {% if cars %}
-    <div class="container">
-        {% for car in cars %}
-        <div class="card">
-            {% if car.image_path %}
-            <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
-            {% else %}
-            <img src="{{ url_for('auth.static', filename='images/no_image_available.png') }}" alt="无图片">
-            {% endif %}
-            <div class="content">
-                <h3>{{ car.car_name }}</h3>
-                <p>{{ car.description or '无描述' }}</p>
-                <p class="price">价格: ¥{{ car.price }}</p>
-
-                <!-- 添加到愿望单按钮 -->
-                <button class="wishlist-button" data-car-id="{{ car.car_id }}">添加到愿望单</button>
-            </div>
+   <div class="container">
+    {% for car in cars %}
+    <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
+        {% if car.image_path %}
+        <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
+        {% else %}
+        <img src="{{ url_for('auth.static', filename='images/no_image_available.png') }}" alt="无图片">
+        {% endif %}
+        <div class="content">
+            <h3>{{ car.car_name }}</h3>
+            <p>{{ car.description or '无描述' }}</p>
+            <p class="price">价格: ¥{{ car.price }}</p>
         </div>
-        {% endfor %}
-    </div>
+    </a>
+    {% endfor %}
+</div>
     {% else %}
     <div style="text-align: center; margin-top: 50px; font-size: 18px; color: #888;">
         哎哟花了我吃奶的劲都没有找到车辆呢！

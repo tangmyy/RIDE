@@ -2,29 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>车辆详情</title>
+    <title>{{ car.car_name }} - 车辆详情</title>
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/ride.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>车辆详情</h1>
-    <p><strong>名称:</strong> {{ car.car_name }}</p>
-    <p><strong>品牌:</strong> {{ car.brand_name }}</p>
-    <p><strong>类型:</strong> {{ car.type_name }}</p>
-    <p><strong>价格:</strong> {{ car.price }}</p>
-    <p><strong>描述:</strong> {{ car.description or '无' }}</p>
-    <p><strong>是否上架:</strong> {{ '是' if car.is_on_shelf else '否' }}</p>
-    <p><strong>是否租赁:</strong> {{ '是' if car.is_rented else '否' }}</p>
+    <div class="container">
+        <h1>{{ car.car_name }}</h1>
+        <p><strong>品牌：</strong>{{ car.brand_name }}</p>
+        <p><strong>车型：</strong>{{ car.type_name }}</p>
+        <p><strong>描述：</strong>{{ car.description or '无描述' }}</p>
+        <p><strong>价格：</strong>¥{{ car.price }}</p>
+        <p><strong>公开状态：</strong>{{ '公开' if car.is_on_shelf else '未公开' }}</p>
+        <p><strong>出租状态：</strong>{{ '出租中' if car.is_rented else '未出租' }}</p>
 
-    <h2>图片</h2>
-    {% if images %}
-        {% for image in images %}
-            <img src="{{ url_for('static', filename=image.image_path) }}" alt="车辆图片" width="200">
-        {% endfor %}
-    {% else %}
-        <p>无图片</p>
-    {% endif %}
+        <h2>车辆图片</h2>
+        {% if images %}
+            {% for image in images %}
+                <img src="{{ url_for('static', filename=image) }}" alt="{{ car.car_name }}">
+            {% endfor %}
+        {% else %}
+            <p>暂无图片</p>
+        {% endif %}
 
-    <a href="{{ url_for('auth.ride') }}">返回车辆列表</a>
+        <a href="{{ url_for('auth.ride') }}" class="back-button">返回车辆页面</a>
+    </div>
 </body>
 </html>

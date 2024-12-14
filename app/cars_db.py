@@ -34,6 +34,7 @@ def get_car_by_id(car_id):
         return cursor.fetchone()
 
 
+
 def get_cars_by_query(query):
     """
     根据搜索关键词模糊查询车辆

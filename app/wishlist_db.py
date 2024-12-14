@@ -50,14 +50,26 @@ def remove_from_wishlist(user_id, car_id):
 
 
 def get_wishlist_by_user(user_id):
-    """获取指定用户的愿望单"""
+    """
+    获取指定用户的愿望单，包含每辆车的第一张图片路径
+    """
     with sqlite3.connect(DATABASE) as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
+
+        # 联合查询获取愿望单车辆及其第一张图片
         cursor.execute('''
-            SELECT cars.car_id, cars.car_name, cars.brand_name, cars.type_name, cars.price, cars.description
+            SELECT cars.car_id, cars.car_name, cars.brand_name, cars.type_name, cars.price, 
+                   cars.description, car_images.image_path
             FROM wishlist
             JOIN cars ON wishlist.car_id = cars.car_id
+            LEFT JOIN (
+                SELECT car_id, MIN(image_id) AS min_image_id
+                FROM car_images
+                GROUP BY car_id
+            ) AS first_images ON cars.car_id = first_images.car_id
+            LEFT JOIN car_images ON first_images.min_image_id = car_images.image_id
             WHERE wishlist.user_id = ?
         ''', (user_id,))
+
         return cursor.fetchall()
