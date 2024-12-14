@@ -1,3 +1,4 @@
+/* 保留现有样式 */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -28,3 +29,65 @@ img {
     max-width: 100px;
     height: auto;
 }
+
+/* 新增卡片布局样式 */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    width: 250px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card .content {
+    padding: 15px;
+}
+
+.card .content h3 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.card .content p {
+    font-size: 14px;
+    color: #666;
+}
+.card .price {
+    font-size: 20px; /* 调整字体大小 */
+    font-weight: bold; /* 加粗 */
+    color: #FF4500; /* 橙红色 */
+    margin-top: 10px; /* 与描述之间的间距 */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: #007BFF;
+}
+/* 商品价格样式 */
+

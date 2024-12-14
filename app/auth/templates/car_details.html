@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆详情</title>
+    <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/ride.css') }}">
+</head>
+<body>
+    <h1>车辆详情</h1>
+    <p><strong>名称:</strong> {{ car.car_name }}</p>
+    <p><strong>品牌:</strong> {{ car.brand_name }}</p>
+    <p><strong>类型:</strong> {{ car.type_name }}</p>
+    <p><strong>价格:</strong> {{ car.price }}</p>
+    <p><strong>描述:</strong> {{ car.description or '无' }}</p>
+    <p><strong>是否上架:</strong> {{ '是' if car.is_on_shelf else '否' }}</p>
+    <p><strong>是否租赁:</strong> {{ '是' if car.is_rented else '否' }}</p>
+
+    <h2>图片</h2>
+    {% if images %}
+        {% for image in images %}
+            <img src="{{ url_for('static', filename=image.image_path) }}" alt="车辆图片" width="200">
+        {% endfor %}
+    {% else %}
+        <p>无图片</p>
+    {% endif %}
+
+    <a href="{{ url_for('auth.ride') }}">返回车辆列表</a>
+</body>
+</html>

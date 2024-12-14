@@ -47,6 +47,7 @@ def get_cars_by_query(query):
         ''', (f'%{query}%', f'%{query}%', f'%{query}%'))
         return cursor.fetchall()
 
+
 def delete_car(car_id):
     """删除指定车辆"""
     with sqlite3.connect(DATABASE) as conn:
@@ -69,3 +70,27 @@ def update_car(car_id, **kwargs):
         ''', values)
         conn.commit()
 
+
+def get_unique_brands():
+    """获取所有唯一的品牌名称"""
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT DISTINCT brand_name FROM cars ORDER BY brand_name')
+        return [row[0] for row in cursor.fetchall()]
+
+
+def get_unique_types():
+    """获取所有唯一的车型名称"""
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT DISTINCT type_name FROM cars ORDER BY type_name')
+        return [row[0] for row in cursor.fetchall()]
+
+
+def get_price_range():
+    """获取价格范围（最低价和最高价）"""
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT MIN(price), MAX(price) FROM cars')
+        result = cursor.fetchone()
+        return result  # 返回元组 (min_price, max_price)

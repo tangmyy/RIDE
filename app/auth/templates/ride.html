@@ -6,43 +6,60 @@
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/ride.css') }}">
 </head>
 <body>
-    <h1>所有车辆信息</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>名称</th>
-                <th>品牌</th>
-                <th>类型</th>
-                <th>价格</th>
-                <th>描述</th>
-                <th>图片</th>
-                <th>是否上架</th>
-                <th>是否租赁</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for car in cars %}
-            <tr>
-                <td>{{ car.car_id }}</td>
-                <td>{{ car.car_name }}</td>
-                <td>{{ car.brand_name }}</td>
-                <td>{{ car.type_name }}</td>
-                <td>{{ car.price }}</td>
-                <td>{{ car.description }}</td>
-                <td>
-                    {% if car.image_path %}
-                    <img src="{{ url_for('static', filename=car.image_path) }}" alt="图片" width="100">
-                    {% else %}
-                    无图片
-                    {% endif %}
-                </td>
-                <td>{{ '是' if car.is_on_shelf else '否' }}</td>
-                <td>{{ '是' if car.is_rented else '否' }}</td>
-            </tr>
+    <h1 style="text-align: center;">所有车辆信息</h1>
+
+    <!-- 搜索表单 -->
+    <form method="post" action="{{ url_for('auth.ride') }}" style="text-align: center; margin-bottom: 20px;">
+        <input type="text" name="search_query" value="{{ request.form.get('search_query', '') }}" placeholder="请输入车辆名称、品牌或类型进行搜索" style="width: 300px; padding: 8px;">
+        <select name="brand" style="padding: 8px; margin-left: 10px;">
+            <option value="all">全部品牌</option>
+            {% for brand in brands %}
+            <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
             {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ url_for('auth.home') }}">返回主页</a>
+        </select>
+        <select name="type" style="padding: 8px; margin-left: 10px;">
+            <option value="all">全部车型</option>
+            {% for type in types %}
+            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
+        <select name="sort_order" style="padding: 8px; margin-left: 10px;">
+            <option value="">默认排序</option>
+            <option value="asc" {% if sort_order == "asc" %}selected{% endif %}>价格从低到高</option>
+            <option value="desc" {% if sort_order == "desc" %}selected{% endif %}>价格从高到低</option>
+        </select>
+        <input type="number" name="min_price" placeholder="最低价格" style="width: 120px; padding: 8px; margin-left: 10px;" value="{{ min_price }}">
+        <input type="number" name="max_price" placeholder="最高价格" style="width: 120px; padding: 8px;" value="{{ max_price }}">
+        <button type="submit" style="padding: 8px 15px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            搜索
+        </button>
+    </form>
+
+    <!-- 检查是否有车辆数据 -->
+    {% if cars %}
+    <div class="container">
+        {% for car in cars %}
+        <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
+            {% if car.image_path %}
+            <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
+            {% else %}
+            <img src="{{ url_for('auth.static', filename='images/no_image_available.png') }}" alt="无图片">
+            {% endif %}
+            <div class="content">
+                <h3>{{ car.car_name }}</h3>
+                <p>{{ car.description or '无描述' }}</p>
+                <p class="price">价格: ¥{{ car.price }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- 没有车辆时显示的提示信息 -->
+    <div style="text-align: center; margin-top: 50px; font-size: 18px; color: #888;">
+        哎哟花了我吃奶的劲都没有找到车辆呢！
+    </div>
+    {% endif %}
+
+    <a href="{{ url_for('auth.home') }}" style="display: block; text-align: center; margin-top: 20px;">返回主页</a>
 </body>
 </html>

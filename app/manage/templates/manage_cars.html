@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>车辆展示</title>
+    <title>车辆管理</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
@@ -13,24 +13,36 @@
             color: #333;
         }
 
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 10px 0;
+        h1 {
+            text-align: center;
+            color: #444;
         }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .navbar a:hover {
-            background-color: #575757;
+        .search-container input {
+            width: 300px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .search-container button {
+            padding: 8px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
         }
 
         table {
@@ -72,24 +84,16 @@
         .button:hover {
             background-color: #CC0000;
         }
-
-        img {
-            max-width: 100px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <div class="navbar">
-        <a href="{{ url_for('manage.view_cars') }}">车辆展示</a>
-        <a href="{{ url_for('manage.add_car_route') }}">车辆添加</a>
-        <a href="{{ url_for('manage.view_users') }}">用户管理</a>
-        <a href="{{ url_for('auth.logout') }}">退出登录</a>
+    <!-- 搜索框 -->
+    <div class="search-container">
+        <input type="text" id="search-query" placeholder="请输入车辆名称、品牌或类型进行搜索">
+        <button onclick="searchCars()">搜索</button>
     </div>
 
-    <h1 style="text-align: center;">车辆展示</h1>
-
+    <!-- 表格展示 -->
     <table>
         <thead>
             <tr>
@@ -99,32 +103,74 @@
                 <th>类型</th>
                 <th>价格</th>
                 <th>描述</th>
-                <th>图片</th> <!-- 添加图片列 -->
                 <th>是否上架</th>
                 <th>是否租赁</th>
+                <th>操作</th>
             </tr>
         </thead>
-        <tbody>
-            {% for car in cars %}
-            <tr>
-                <td>{{ car.car_id }}</td>
-                <td>{{ car.car_name }}</td>
-                <td>{{ car.brand_name }}</td>
-                <td>{{ car.type_name }}</td>
-                <td>{{ car.price }}</td>
-                <td>{{ car.description or '无' }}</td>
-                <td>
-                    {% if car.image_path %}
-                    <img src="{{ url_for('static', filename=car.image_path) }}" alt="图片" width="100">
-                    {% else %}
-                    无图片
-                    {% endif %}
-                </td>
-                <td>{{ '是' if car.is_on_shelf else '否' }}</td>
-                <td>{{ '是' if car.is_rented else '否' }}</td>
-            </tr>
-            {% endfor %}
+        <tbody id="cars-table-body">
+            <!-- 表格数据通过 JavaScript 动态加载 -->
         </tbody>
     </table>
+
+    <script>
+        // 搜索车辆
+        function searchCars() {
+            const query = document.getElementById('search-query').value;
+
+            fetch(`/manage/cars/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('cars-table-body');
+                    tableBody.innerHTML = ''; // 清空现有内容
+
+                    if (data.cars.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="9">未找到匹配的车辆</td></tr>';
+                    } else {
+                        data.cars.forEach(car => {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                                <td>${car.car_id}</td>
+                                <td>${car.car_name}</td>
+                                <td>${car.brand_name}</td>
+                                <td>${car.type_name}</td>
+                                <td>${car.price}</td>
+                                <td>${car.description || '无'}</td>
+                                <td>${car.is_on_shelf ? '是' : '否'}</td>
+                                <td>${car.is_rented ? '是' : '否'}</td>
+                                <td>
+                                    <button class="button" onclick="deleteCar(${car.car_id})">删除</button>
+                                </td>
+                            `;
+
+                            tableBody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching cars:', error));
+        }
+
+        // 删除车辆
+        function deleteCar(carId) {
+            if (!confirm('确定要删除这辆车吗？')) return;
+
+            fetch(`/manage/cars/delete/${carId}`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('车辆删除成功！');
+                        searchCars(); // 重新加载表格数据
+                    } else {
+                        alert('删除失败，请重试。');
+                    }
+                })
+                .catch(error => console.error('Error deleting car:', error));
+        }
+
+        // 页面加载时默认加载全部车辆
+        document.addEventListener('DOMContentLoaded', () => {
+            searchCars();
+        });
+    </script>
 </body>
 </html>

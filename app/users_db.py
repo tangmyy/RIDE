@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 
 DATABASE = 'users.db'
 
+
 def get_all_users():
     """获取所有用户信息"""
     with sqlite3.connect(DATABASE) as conn:
@@ -10,6 +11,7 @@ def get_all_users():
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM users')
         return cursor.fetchall()
+
 
 def add_user_to_db(username, password, is_admin):
     """
@@ -25,6 +27,7 @@ def add_user_to_db(username, password, is_admin):
         conn.commit()
         return cursor.lastrowid  # 返回新插入记录的自增 ID
 
+
 def get_user_by_id(user_id):
     """
     根据用户 ID 获取用户信息
@@ -34,6 +37,7 @@ def get_user_by_id(user_id):
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
         return cursor.fetchone()
+
 
 def get_users_by_query(search_query):
     """
