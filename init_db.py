@@ -28,6 +28,18 @@ def init_db():
             FOREIGN KEY(user_id) REFERENCES users(id)
         )''')
 
+        cursor.execute('''
+                   CREATE TABLE IF NOT EXISTS wishlist (
+                       id INTEGER PRIMARY KEY AUTOINCREMENT,
+                       user_id INTEGER NOT NULL,
+                       car_id INTEGER NOT NULL,
+                       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                       UNIQUE(user_id, car_id),
+                       FOREIGN KEY(user_id) REFERENCES users(id),
+                       FOREIGN KEY(car_id) REFERENCES cars(car_id)
+                   )
+               ''')
+
         # 插入示例订单数据
         cursor.execute(
             "INSERT OR IGNORE INTO orders (id, user_id, total_price, time) VALUES (1, 1, 100.00, '2024-11-25 03:00:00')")

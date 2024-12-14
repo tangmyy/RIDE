@@ -4,33 +4,16 @@
     <meta charset="UTF-8">
     <title>车辆信息</title>
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/ride.css') }}">
-    <style>
-        /* 添加导航栏样式 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 16px;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="navbar">
         <a href="{{ url_for('auth.ride') }}">车辆信息</a>
+        <a href="{{ url_for('wishlist.view_wishlist') }}">查看愿望单</a>
         <a href="{{ url_for('auth.logout') }}">退出登录</a>
     </div>
 
@@ -83,7 +66,7 @@
     {% if cars %}
     <div class="container">
         {% for car in cars %}
-        <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
+        <div class="card">
             {% if car.image_path %}
             <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
             {% else %}
@@ -93,8 +76,11 @@
                 <h3>{{ car.car_name }}</h3>
                 <p>{{ car.description or '无描述' }}</p>
                 <p class="price">价格: ¥{{ car.price }}</p>
+
+                <!-- 添加到愿望单按钮 -->
+                <button class="wishlist-button" data-car-id="{{ car.car_id }}">添加到愿望单</button>
             </div>
-        </a>
+        </div>
         {% endfor %}
     </div>
     {% else %}
@@ -104,5 +90,34 @@
     {% endif %}
 
     <a href="{{ url_for('auth.home') }}" style="display: block; text-align: center; margin-top: 20px;">返回主页</a>
+
+    <!-- AJAX 和 SweetAlert2 脚本 -->
+    <script>
+        $(document).ready(function () {
+            $(".wishlist-button").click(function () {
+                const carId = $(this).data("car-id");
+                $.ajax({
+                    url: "{{ url_for('wishlist.add_wishlist', car_id=0) }}".replace("0", carId),
+                    method: "POST",
+                    success: function (response) {
+                        Swal.fire({
+                            title: response.status === "success" ? "成功！" : "错误！",
+                            text: response.message,
+                            icon: response.status === "success" ? "success" : "error",
+                            confirmButtonText: "确定"
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "错误！",
+                            text: "无法添加到愿望单，请稍后重试。",
+                            icon: "error",
+                            confirmButtonText: "确定"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
