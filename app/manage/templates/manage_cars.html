@@ -4,103 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>车辆管理</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            color: #444;
-        }
-
-        .search-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .search-container input {
-            width: 300px;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .search-container button {
-            padding: 8px 15px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            background-color: #fff;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f4f4f4;
-            color: #333;
-            font-weight: bold;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .button {
-            padding: 5px 10px;
-            background-color: #FF4C4C;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: #CC0000;
-        }
-
-        .edit-button {
-            padding: 5px 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .edit-button:hover {
-            background-color: #218838;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('manage.static', filename='css/manage.css') }}">
 </head>
 <body>
+
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('admin.dashboard') }}">车辆管理系统</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('admin.dashboard') }}">后台主页</a>
+            <a href="{{ url_for('admin.select_users') }}">用户管理</a>
+            <a href="{{ url_for('admin.add') }}">添加车辆</a>
+            <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        </div>
+    </div>
+
+
+
     <!-- 搜索框 -->
     <div class="search-container">
         <input type="text" id="search-query" placeholder="请输入车辆名称、品牌或类型进行搜索">

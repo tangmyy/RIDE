@@ -1,0 +1,206 @@
+/* 全局样式 */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #25252b; /* 深灰背景 */
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding-top: 70px; /* 导航栏高度 + 一些间距 */
+}
+/* 导航栏样式 */
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* 左右分布 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px 20px;
+    background: #2d2d39 !important; /* 强制背景色为深灰色 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 添加阴影效果 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar .logo a {
+    display: flex;
+    gap: 15px; /* 链接之间的间隔 */
+    font-size: 24px;
+    font-weight: 700;
+    color: #45f3ff !important; /* 文字颜色为蓝色，强制生效 */
+    text-decoration: none;
+    text-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}
+
+.navbar .nav-links a {
+    margin-left: 15px;
+    color: #fff !important; /* 链接字体颜色为白色 */
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    margin-right: 10px; /* 给所有链接右侧留出间距 */
+}
+
+.navbar .nav-links a:hover {
+    background: #45f3ff;
+    color: #25252b !important; /* 悬停时字体颜色为深灰色 */
+    box-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}
+
+
+
+/* 搜索框样式 */
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container input {
+    padding: 10px 15px;
+    border: 2px solid #45f3ff;
+    border-radius: 30px;
+    background: #2d2d39;
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.search-container input:focus {
+    border-color: #ff2770;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    border: none;
+    background: #ff2770;
+    color: #fff;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770;
+    transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 15px #ff4d88, 0 0 40px #ff4d88;
+}
+
+/* 表格样式 */
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #2d2d39;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+thead {
+    background: #45f3ff;
+    text-transform: uppercase;
+}
+
+thead th {
+    padding: 15px;
+    color: #25252b;
+    font-weight: 700;
+    font-size: 16px;
+    text-shadow: 0 0 10px #45f3ff, 0 0 20px #45f3ff;
+}
+
+tbody tr {
+    transition: all 0.3s ease;
+    background: #2d2d39;
+}
+
+tbody tr:hover {
+    background: rgba(69, 243, 255, 0.1);
+}
+
+tbody td {
+    padding: 15px;
+    text-align: center;
+    color: #bbb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tbody td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 按钮样式 */
+.button, .edit-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.button {
+    background: #ff2770;
+    color: #fff;
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770;
+}
+
+.button:hover {
+    background: #ff4d88;
+    box-shadow: 0 0 15px #ff4d88, 0 0 40px #ff4d88;
+}
+
+.edit-button {
+    background: #45f3ff;
+    color: #25252b;
+    box-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}
+
+.edit-button:hover {
+    background: #33c7d4;
+    box-shadow: 0 0 15px #33c7d4, 0 0 40px #33c7d4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    thead th {
+        font-size: 14px;
+    }
+
+    tbody td {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .button, .edit-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .search-container input {
+        width: 70%;
+    }
+
+
+}

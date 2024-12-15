@@ -284,3 +284,8 @@ def delete_image(image_id):
     """
     delete_vehicle_image(image_id)  # 删除图片及其记录
     return redirect(request.referrer or url_for('manage.view_cars'))  # 返回上一页
+
+@manage_bp.route('/manage_cars', methods=['GET'])
+def manage_cars():
+    return render_template('manage_cars.html')
+

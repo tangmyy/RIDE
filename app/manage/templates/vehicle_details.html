@@ -4,42 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>车辆详情</title>
+    <link rel="stylesheet" href="{{ url_for('manage.static', filename='css/update.css') }}">
 </head>
 <body>
-    {% if vehicle %}
-        <h1>车辆详情</h1>
-        <p>车辆 ID: {{ vehicle.car_id }}</p>
-        <p>名称: {{ vehicle.car_name }}</p>
-        <p>品牌: {{ vehicle.brand_name }}</p>
-        <p>类型: {{ vehicle.type_name }}</p>
-        <p>价格: {{ vehicle.price }}</p>
-        <p>描述: {{ vehicle.description }}</p>
-        <p>是否上架: {{ '是' if vehicle.is_on_shelf else '否' }}</p>
-        <p>是否租赁中: {{ '是' if vehicle.is_rented else '否' }}</p>
 
-        <h2>图片列表</h2>
-        {% if vehicle_images %}
-            <ul>
-                {% for image in vehicle_images %}
-                    <li>
-                        <img src="{{ url_for('static', filename=image.image_path) }}" alt="车辆图片" width="200">
-                    </li>
-                {% endfor %}
-            </ul>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <a href="{{ url_for('manage.manage_cars') }}">车辆管理</a>
+        {% if current_user.is_authenticated %}
+            <span style="margin-left: 10px; color: white;">
+                欢迎, {{ current_user.username }}
+            </span>
+            <a href="{{ url_for('auth.logout') }}">退出登录</a>
         {% else %}
-            <p>暂无图片。</p>
+            <a href="{{ url_for('auth.login') }}">登录</a>
+        {% endif %}
+    </div>
+
+    <!-- 主容器 -->
+    <div class="details-container">
+        <!-- 标题 -->
+        <div class="details-header">
+            <h1>{{ vehicle.car_name }}</h1>
+        </div>
+
+        <!-- 车辆信息 -->
+        <div class="details-content">
+            <!-- 左侧信息 -->
+            <div class="details-left">
+                <p><strong>车辆 ID:</strong> {{ vehicle.car_id }}</p>
+                <p><strong>品牌:</strong> {{ vehicle.brand_name }}</p>
+                <p><strong>类型:</strong> {{ vehicle.type_name }}</p>
+                <p><strong>价格:</strong> ¥{{ vehicle.price }}</p>
+                <p><strong>描述:</strong> {{ vehicle.description or '无描述' }}</p>
+                <p><strong>是否上架:</strong> {{ '是' if vehicle.is_on_shelf else '否' }}</p>
+                <p><strong>是否租赁中:</strong> {{ '是' if vehicle.is_rented else '否' }}</p>
+            </div>
+            <div class="details-right">
+                <p><strong>发动机:</strong> 单缸四冲程 水冷·250CC </p>
+                <p><strong>实际排量:</strong> 249CC </p>
+                <p><strong>最大扭矩:</strong> 21.5/7500转 </p>
+                <p><strong>最大功率:</strong> 20.5/9000转 </p>
+                <p><strong>最大马力(Ps):</strong> 27.9匹 </p>
+                <p><strong>整备质量(kg):</strong> 158kg </p>
+            </div>
+        </div>
+
+        <!-- 图片轮播 -->
+        {% if vehicle_images %}
+        <div class="carousel">
+            <div class="carousel-images">
+                {% for image in vehicle_images %}
+                <img src="{{ url_for('static', filename=image.image_path) }}" alt="车辆图片">
+                {% endfor %}
+            </div>
+            <div class="carousel-buttons">
+                <button class="carousel-button prev">&lt;</button>
+                <button class="carousel-button next">&gt;</button>
+            </div>
+        </div>
+        {% else %}
+        <p style="text-align: center;">暂无图片。</p>
         {% endif %}
 
-        <h2>上传新图片</h2>
-        <form action="{{ url_for('manage.vehicle_details', vehicle_id=vehicle.car_id) }}" method="POST" enctype="multipart/form-data">
-            <label for="new_images">选择图片：</label>
-            <input type="file" id="new_images" name="new_images" multiple>
-            <button type="submit">上传图片</button>
-        </form>
+        <!-- 上传文件表单 -->
+        <div class="button-container">
+            <form action="{{ url_for('manage.vehicle_details', vehicle_id=vehicle.car_id) }}" method="POST" enctype="multipart/form-data">
+                <input class="pay-button" type="file" id="new_images" name="new_images" multiple>
+                <button class="back-button" type="submit">上传</button>
+            </form>
+        </div>
+    </div>
 
+    <!-- 脚本部分 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const imagesContainer = document.querySelector(".carousel-images");
+            const prevButton = document.querySelector(".carousel-button.prev");
+            const nextButton = document.querySelector(".carousel-button.next");
 
-    {% else %}
-        <p>{{ error_message }}</p>
-    {% endif %}
+            let currentIndex = 0;
+            const totalImages = document.querySelectorAll(".carousel-images img").length;
+
+            // 更新轮播位置
+            function updateCarousel() {
+                const offset = currentIndex * -100;
+                imagesContainer.style.transform = `translateX(${offset}%)`;
+            }
+
+            // 下一张
+            nextButton.addEventListener("click", function () {
+                currentIndex = (currentIndex + 1) % totalImages;
+                updateCarousel();
+            });
+
+            // 上一张
+            prevButton.addEventListener("click", function () {
+                currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                updateCarousel();
+            });
+        });
+    </script>
+
 </body>
 </html>

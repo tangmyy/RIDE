@@ -167,6 +167,34 @@ body
 	font-weight: 600;
 }
 
+/* 统一 a 标签的基础样式 */
+a {
+    color: #45f3ff; /* 默认颜色为亮蓝色 */
+    text-decoration: none; /* 去掉下划线 */
+    font-weight: 500; /* 字体粗细适中 */
+    transition: all 0.3s ease; /* 平滑过渡效果 */
+    border-radius: 5px; /* 给 a 标签加上圆角 */
+    padding: 5px 10px; /* 内边距，增大点击区域 */
+}
+
+/* 悬停时的效果 */
+a:hover {
+    color: #ff2770; /* 悬停时变为亮粉色 */
+    text-shadow: 0 0 10px #ff2770, 0 0 20px #ff2770; /* 添加粉色发光效果 */
+    background-color: rgba(255, 39, 112, 0.1); /* 添加轻微背景色 */
+    box-shadow: 0 0 10px #ff2770, 0 0 30px #ff2770; /* 发光阴影 */
+}
+
+/* 对登录页面中的 a 标签进行进一步调整 */
+.loginBx a {
+    font-size: 14px; /* 调整字体大小 */
+    text-transform: uppercase; /* 大写显示 */
+    letter-spacing: 0.1em; /* 增加字母间距 */
+    display: inline-block; /* 转为行内块，支持 padding */
+    margin-top: 10px; /* 添加顶部外边距 */
+}
+
+
 /* 登录页面通用样式 */
 .error {
     color: red; /* 设置文字颜色为红色 */
