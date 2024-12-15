@@ -4,97 +4,100 @@
     <meta charset="UTF-8">
     <title>车辆详细信息</title>
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/car_details.css') }}">
-    <style>
-        .details-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .details-container img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        .details-container h1 {
-            margin-top: 0;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .details-container p {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #555;
-        }
-
-        .pay-button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .pay-button:hover {
-            background-color: #0056b3;
-        }
-
-        .back-button {
-            display: inline-block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #6c757d;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .back-button:hover {
-            background-color: #5a6268;
-        }
-    </style>
 </head>
 <body>
-    <div class="details-container">
-        <h1>{{ car.car_name }}</h1>
-        <p><strong>品牌:</strong> {{ car.brand_name }}</p>
-        <p><strong>类型:</strong> {{ car.type_name }}</p>
-        <p><strong>描述:</strong> {{ car.description or '无描述' }}</p>
-        <p><strong>价格:</strong> ¥{{ car.price }}</p>
-        <p><strong>是否上架:</strong> {{ '是' if car.is_on_shelf else '否' }}</p>
-        <p><strong>是否租赁:</strong> {{ '是' if car.is_rented else '否' }}</p>
 
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <a href="{{ url_for('auth.ride') }}">车辆信息</a>
+        {% if current_user.is_authenticated %}
+            <span style="margin-left: 10px; color: white;">
+                欢迎, {{ current_user.username }}
+            </span>
+            <a href="{{ url_for('wishlist.view_wishlist') }}">查看愿望单</a>
+            <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">登录</a>
+        {% endif %}
+    </div>
+
+    <div class="details-container">
+        <!-- 标题部分 -->
+        <div class="details-header">
+            <h1>{{ car.car_name }}</h1>
+        </div>
+
+        <!-- 车辆信息 -->
+        <div class="details-content">
+            <!-- 左侧信息 -->
+            <div class="details-left">
+                <p><strong>品牌:</strong> {{ car.brand_name }}</p>
+                <p><strong>车型:</strong> {{ car.type_name }}</p>
+                <p><strong>描述:</strong> {{ car.description or '无描述' }}</p>
+                <p><strong>价格:</strong> ¥{{ car.price }}</p>
+                <p><strong>是否上架:</strong> {{ '是' if car.is_on_shelf else '否' }}</p>
+                <p><strong>是否租赁:</strong> {{ '是' if car.is_rented else '否' }}</p>
+            </div>
+
+            <!-- 右侧信息 -->
+            <div class="details-right">
+                <p><strong>发动机:</strong> 单缸四冲程 水冷·250CC </p>
+                <p><strong>实际排量:</strong> 249CC </p>
+                <p><strong>最大扭矩:</strong> 21.5/7500转 </p>
+                <p><strong>最大功率:</strong> 20.5/9000转 </p>
+                <p><strong>最大马力(Ps):</strong> 27.9匹 </p>
+                <p><strong>整备质量(kg):</strong> 158kg </p>
+            </div>
+        </div>
+
+
+        <!-- 图片轮播 -->
         {% if images %}
-        <div>
-            <h3>图片:</h3>
-            {% for image in images %}
-            <img src="{{ url_for('static', filename=image) }}" alt="图片">
-            {% endfor %}
+        <div class="carousel">
+            <div class="carousel-images">
+                {% for image in images %}
+                <img src="{{ url_for('static', filename=image) }}" alt="图片">
+                {% endfor %}
+            </div>
+            <div class="carousel-buttons">
+                <button class="carousel-button prev">&lt;</button>
+                <button class="carousel-button next">&gt;</button>
+            </div>
         </div>
         {% else %}
         <p>暂无图片</p>
         {% endif %}
 
-        <!-- 支付按钮 -->
-        <a href="{{ url_for('alipay.place_order', subtotal=car.price) }}" class="pay-button">支付 ¥{{ car.price }}</a>
-
-        <!-- 返回按钮 -->
-        <a href="{{ url_for('auth.ride') }}" class="back-button">返回车辆列表</a>
+        <!-- 支付和返回按钮 -->
+        <div class="button-container">
+            <a href="{{ url_for('alipay.place_order', subtotal=car.price) }}" class="pay-button">支付 ¥{{ car.price }}</a>
+            <a href="{{ url_for('auth.ride') }}" class="back-button">返回车辆列表</a>
+        </div>
     </div>
+
+    <!-- 轮播脚本 -->
+    <script>
+        const imagesContainer = document.querySelector('.carousel-images');
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const nextButton = document.querySelector('.carousel-button.next');
+
+        let currentIndex = 0;
+        const totalImages = document.querySelectorAll('.carousel-images img').length;
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalImages;
+            updateCarousel();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+            updateCarousel();
+        });
+
+        function updateCarousel() {
+            const offset = currentIndex * -100;
+            imagesContainer.style.transform = `translateX(${offset}%)`;
+        }
+    </script>
 </body>
 </html>

@@ -1,58 +1,192 @@
-  .details-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+/* 全局样式：为 body 设置基础样式，包括背景、字体和页面整体效果 */
+body {
+    font-family: Arial, sans-serif; /* 全局字体设置 */
+    margin: 0;
+    padding: 0;
+    background-color: #f8f5f8; /* 浅紫色背景 */
+    color: #333; /* 字体默认颜色 */
 
-        .details-container img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
+    /* 设置背景图片 */
+    background-image: url("images/background.png");
+    background-size: cover; /* 背景图片覆盖整个屏幕 */
+    background-repeat: no-repeat; /* 背景图片不重复 */
+    background-position: center; /* 居中显示背景图片 */
+    background-attachment: fixed; /* 背景固定不滚动 */
+}
 
-        .details-container h1 {
-            margin-top: 0;
-            font-size: 24px;
-            color: #333;
-        }
+/* 主容器样式 */
+.details-container {
+    max-width: 800px; /* 容器最大宽度 */
+    margin: 30px auto; /* 居中显示，上下 30px 外边距 */
+    padding: 20px; /* 内边距 */
+    background: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
+    border-radius: 10px; /* 圆角效果 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+    font-family: 'Playfair Display', serif; /* 使用特定字体 */
+    background-image: linear-gradient(to bottom right, #f8f5f8, #FA7268); /* 渐变背景色 */
+}
 
-        .details-container p {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #555;
-        }
+/* 导航栏样式 */
+.navbar {
+    display: flex; /* 使用 Flex 布局 */
+    justify-content: space-between; /* 左右对齐 */
+    align-items: center; /* 垂直居中 */
+    background-color: #1f2937; /* 深灰色背景 */
+    color: white; /* 字体颜色 */
+    padding: 15px 30px; /* 内边距 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加轻微阴影 */
+}
 
-        .images-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+/* 导航栏链接样式 */
+.navbar a {
+    color: #ffffff; /* 链接颜色 */
+    text-decoration: none; /* 去掉下划线 */
+    font-size: 16px;
+    margin-left: 20px; /* 左侧间距 */
+    transition: color 0.3s ease; /* 添加悬停效果的平滑过渡 */
+}
 
-        .images-container img {
-            max-width: 100px;
-            max-height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
+/* 鼠标悬停时的导航链接效果 */
+.navbar a:hover {
+    color: #38bdf8; /* 悬停时变为浅蓝色 */
+}
 
-        .pay-button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.navbar span {
+    font-size: 16px;
+    color: #ffffff; /* 保持白色字体 */
+}
 
-        .pay-button:hover {
-            background-color: #0056b3;
-        }
+/* 标题样式 */
+.details-header h1 {
+    margin: 0;
+    font-size: 36px; /* 标题字体大小 */
+    font-weight: 700; /* 加粗 */
+    text-transform: uppercase; /* 转换为大写字母 */
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+    letter-spacing: 2px; /* 字母间距 */
+    text-align: center; /* 居中显示 */
+}
+
+/* 车辆信息布局：使用 Flex 布局，实现左右对称 */
+.details-content {
+    display: flex; /* 启用 Flex 布局 */
+    justify-content: space-between; /* 左右分布 */
+    gap: 20px; /* 左右两列之间的间隔 */
+}
+
+/* 左右两列内容设置 */
+.details-left, .details-right {
+    flex: 1; /* 两列平分宽度 */
+}
+
+.details-left {
+    padding-right: 10px; /* 左列右侧内边距 */
+}
+
+.details-right {
+    padding-left: 10px; /* 右列左侧内边距 */
+}
+
+/* 车辆信息文本样式 */
+.details-content p {
+    margin: 10px 0; /* 上下间距 */
+    font-size: 18px; /* 字体大小 */
+    font-weight: 400; /* 普通字体粗细 */
+    color: #555; /* 字体颜色 */
+    line-height: 1.6; /* 行高 */
+}
+
+.details-content p strong {
+    font-weight: 600; /* 加粗 */
+    color: #9c6ed9; /* 芋泥紫色 */
+}
+
+/* 强调价格样式 */
+.details-content p strong.price {
+    font-size: 22px; /* 字体更大 */
+    font-weight: 700; /* 加粗 */
+    color: #814db9; /* 深紫色 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+/* 图片轮播区域样式 */
+.carousel {
+    position: relative;
+    width: 100%; /* 容器宽度占满父容器 */
+    height: 420px; /* 图片高度 */
+    overflow: hidden; /* 超出部分隐藏 */
+    border-radius: 10px; /* 圆角 */
+    margin: 20px 0; /* 上下间隔 */
+}
+
+.carousel-images {
+    display: flex; /* 使用 Flex 布局 */
+    transition: transform 0.5s ease-in-out; /* 平滑过渡效果 */
+}
+
+.carousel-images img {
+    min-width: 100%; /* 图片宽度占满容器 */
+    height: 420px; /* 图片高度 */
+    object-fit: cover; /* 保持比例，裁剪多余部分 */
+}
+
+/* 左右轮播按钮样式 */
+.carousel-buttons {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.carousel-button {
+    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    color: white; /* 字体颜色 */
+    border: none;
+    padding: 10px;
+    cursor: pointer; /* 鼠标变为指针 */
+    border-radius: 50%; /* 圆形按钮 */
+    font-size: 18px;
+    margin: 0 10px;
+    z-index: 1;
+}
+
+.carousel-button:hover {
+    background: rgba(0, 0, 0, 0.8); /* 悬停时背景变深 */
+}
+
+/* 支付和返回按钮区域 */
+.button-container {
+    margin-top: 20px; /* 上方间距 */
+    text-align: center; /* 居中对齐 */
+}
+
+.pay-button, .back-button {
+    display: inline-block;
+    margin: 15px 10px 0;
+    padding: 12px 25px; /* 按钮大小 */
+    font-size: 18px; /* 字体大小 */
+    font-weight: 600; /* 加粗 */
+    color: white;
+    border-radius: 5px; /* 圆角按钮 */
+    text-decoration: none; /* 去掉下划线 */
+    transition: background-color 0.3s ease; /* 平滑背景颜色变化 */
+}
+
+.pay-button {
+    background-color: #9c6ed9; /* 芋泥紫色 */
+}
+
+.pay-button:hover {
+    background-color: #814db9; /* 悬停时深紫色 */
+}
+
+.back-button {
+    background-color: #6c757d; /* 深灰色 */
+}
+
+.back-button:hover {
+    background-color: #5a6268; /* 悬停时变深 */
+}

@@ -7,95 +7,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        /* 导航栏样式 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 16px;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-
-        /* 卡片布局 */
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 250px;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .content {
-            padding: 15px;
-        }
-
-        .content h3 {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .content p {
-            color: #555;
-            font-size: 14px;
-            margin: 5px 0;
-        }
-
-        .wishlist-button {
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .wishlist-button:hover {
-            background-color: darkred;
-        }
-    </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="navbar">
         <a href="{{ url_for('auth.ride') }}">车辆信息</a>
-        <a href="{{ url_for('wishlist.view_wishlist') }}">查看愿望单</a>
-        <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        {% if current_user.is_authenticated %}
+            <span style="margin-left: 10px; color: white;">
+                欢迎, {{ current_user.username }}
+            </span>
+        <a href="{{ url_for('auth.ride') }}" >返回车辆页面</a>
+            <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">登录</a>
+        {% endif %}
     </div>
 
     <h1 style="text-align: center;">我的愿望单</h1>
 
+
 {% if wishlist %}
 <div class="container">
     {% for car in wishlist %}
-    <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
+    <a class="card">
         {% if car.image_path %}
         <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
         {% else %}
@@ -105,6 +39,9 @@
             <h3>{{ car.car_name }}</h3>
             <p>{{ car.description or '无描述' }}</p>
             <p class="price">价格: ¥{{ car.price }}</p>
+            {% if current_user.is_authenticated %}
+            <button type="button" class="remove-wishlist-button" data-car-id="{{ car.car_id }}" style="margin-top: 10px; background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">删除</button>
+            {% endif %}
         </div>
     </a>
     {% endfor %}
@@ -115,7 +52,47 @@
 </div>
 {% endif %}
 
+<script>
+    $(document).ready(function () {
+        // 监听删除按钮点击事件
+        $(".remove-wishlist-button").click(function () {
+            const carId = $(this).data("car-id"); // 获取车辆 ID
+            const card = $(this).closest(".card"); // 获取当前车辆卡片
 
-    <a href="{{ url_for('auth.ride') }}" style="display: block; text-align: center; margin-top: 20px;">返回车辆页面</a>
+            // 弹窗确认删除
+            Swal.fire({
+                title: "确定要移除该车辆吗？",
+                text: "移除后可以重新添加到愿望单。",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "是的，删除它！",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 发送删除请求
+                    $.ajax({
+                        url: "{{ url_for('wishlist.remove_wishlist', car_id=0) }}".replace("0", carId),
+                        method: "POST",
+                        success: function (response) {
+                            Swal.fire("删除成功！", "车辆已从愿望单移除。", "success");
+                            card.fadeOut(300, function () {
+                                $(this).remove(); // 删除卡片
+                            });
+                        },
+                        error: function () {
+                            Swal.fire("删除失败！", "请稍后再试。", "error");
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
 </body>
 </html>

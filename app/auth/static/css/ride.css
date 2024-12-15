@@ -1,57 +1,111 @@
-/* 保留现有样式 */
+/* 全局样式 */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f4f4f4;
-}
-
-tr:nth-child(even) {
+    margin: 0;
+    padding: 0;
     background-color: #f9f9f9;
+    color: #333;
 }
 
-img {
+/* 导航栏 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f2937;
+    color: white;
+    padding: 15px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #38bdf8;
+}
+
+.navbar span {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* 标题 */
+h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #333333;
+    margin: 20px 0;
+}
+
+/* 搜索表单 */
+form {
+    text-align: center;
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px 0;
+}
+
+form input,
+form select,
+form button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #d1d5db;
     border-radius: 5px;
-    max-width: 100px;
-    height: auto;
 }
 
-/* 新增卡片布局样式 */
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+}
+
+form button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* 卡片容器 */
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    padding: 20px;
 }
 
+/* 单个卡片样式 */
 .card {
-    width: 250px;
-    background-color: #fff;
+    width: 260px;
+    background: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     color: inherit;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -67,74 +121,55 @@ img {
 
 .card .content h3 {
     margin: 10px 0 5px;
-    font-size: 18px;
+    font-size: 20px;
+    color: #1f2937;
 }
 
 .card .content p {
     font-size: 14px;
-    color: #666;
-}
-.card .price {
-    font-size: 20px; /* 调整字体大小 */
-    font-weight: bold; /* 加粗 */
-    color: #FF4500; /* 橙红色 */
-    margin-top: 10px; /* 与描述之间的间距 */
+    color: #6b7280;
+    margin-bottom: 10px;
 }
 
+.card .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ef4444;
+    margin-bottom: 15px;
+}
+
+/* 添加到愿望单按钮 */
+.card .wishlist-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.card .wishlist-button:hover {
+    background-color: #218838;
+}
+
+/* 没有结果时的样式 */
+.no-results {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #6b7280;
+}
+
+/* 链接样式 */
 a {
+    color: #007BFF;
     text-decoration: none;
-    color: inherit;
+    font-size: 14px;
 }
 
 a:hover {
-    color: #007BFF;
+    text-decoration: underline;
+    color: #0056b3;
 }
-/* 商品价格样式 */
-
-   .wishlist-button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .wishlist-button:hover {
-            background-color: #218838;
-        }
-   /* 导航栏样式 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 16px;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-
-        .wishlist-button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .wishlist-button:hover {
-            background-color: #218838;
-        }
