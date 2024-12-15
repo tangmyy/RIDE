@@ -22,7 +22,7 @@ def login():
                 if user.is_admin:  # 判断是否是管理员
                     return redirect(url_for('admin.dashboard'))  # 跳转到管理员首页
                 else:
-                    return redirect(url_for('auth.home'))  # 跳转到普通用户主页
+                    return redirect(url_for('auth.ride'))  # 跳转到普通用户主页
             else:
                 flash('用户名或密码错误，请检查输入。', 'error')
     return render_template('login.html')
@@ -45,11 +45,10 @@ def logout():
 
 from app.cars_db import get_all_cars, get_cars_by_query, get_unique_brands, get_unique_types
 
-
 from app.cars_db import get_price_range
 
+
 @auth.route('/ride', methods=['GET', 'POST'])
-@login_required
 def ride():
     """
     车辆信息页面，支持搜索、品牌筛选、车型筛选、价格排序、价格区间筛选、是否公开筛选和是否出租筛选功能
@@ -135,3 +134,25 @@ def car_details(car_id):
     images = get_images_by_car_id(car_id)  # 获取车辆的所有图片
 
     return render_template('car_details.html', car=car, images=images)
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    """注册页面和功能"""
+    if request.method == 'POST':
+        username = request.form.get('username').strip()
+        password = request.form.get('password').strip()
+
+        if not username or not password:
+            flash('用户名和密码不能为空！', 'error')
+            return redirect(url_for('auth.register'))
+
+        # 检查用户名是否已存在
+        if User.get_user_by_username(username):
+            flash('用户名已存在，请换一个用户名。', 'error')
+            return redirect(url_for('auth.register'))
+
+        # 创建用户
+        User.create_user(username, password)
+        flash('注册成功，请登录！', 'success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('register.html')

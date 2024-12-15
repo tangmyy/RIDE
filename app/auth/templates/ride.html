@@ -7,14 +7,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="navbar">
         <a href="{{ url_for('auth.ride') }}">车辆信息</a>
-        <a href="{{ url_for('wishlist.view_wishlist') }}">查看愿望单</a>
-        <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        {% if current_user.is_authenticated %}
+            <span style="margin-left: 10px; color: white;">
+                欢迎, {{ current_user.username }}
+            </span>
+            <a href="{{ url_for('wishlist.view_wishlist') }}">查看愿望单</a>
+            <a href="{{ url_for('auth.logout') }}">退出登录</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">登录</a>
+        {% endif %}
     </div>
 
     <h1 style="text-align: center;">所有车辆信息</h1>
@@ -22,71 +28,66 @@
     <!-- 搜索表单 -->
     <form method="post" action="{{ url_for('auth.ride') }}" style="text-align: center; margin-bottom: 20px;">
         <input type="text" name="search_query" value="{{ request.form.get('search_query', '') }}" placeholder="请输入车辆名称、品牌或类型进行搜索" style="width: 300px; padding: 8px;">
-
         <select name="brand" style="padding: 8px; margin-left: 10px;">
             <option value="all">全部品牌</option>
             {% for brand in brands %}
             <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
             {% endfor %}
         </select>
-
         <select name="type" style="padding: 8px; margin-left: 10px;">
             <option value="all">全部车型</option>
             {% for type in types %}
             <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
-
         <select name="sort_order" style="padding: 8px; margin-left: 10px;">
             <option value="">默认排序</option>
             <option value="asc" {% if sort_order == "asc" %}selected{% endif %}>价格从低到高</option>
             <option value="desc" {% if sort_order == "desc" %}selected{% endif %}>价格从高到低</option>
         </select>
-
         <input type="number" name="min_price" placeholder="最低价格" style="width: 120px; padding: 8px; margin-left: 10px;" value="{{ min_price }}">
         <input type="number" name="max_price" placeholder="最高价格" style="width: 120px; padding: 8px;" value="{{ max_price }}">
-
         <select name="is_public" style="padding: 8px; margin-left: 10px;">
             <option value="all">全部公开状态</option>
             <option value="1" {% if is_public == "1" %}selected{% endif %}>公开</option>
             <option value="0" {% if is_public == "0" %}selected{% endif %}>未公开</option>
         </select>
-
         <select name="is_rented" style="padding: 8px; margin-left: 10px;">
             <option value="all">全部出租状态</option>
             <option value="1" {% if is_rented == "1" %}selected{% endif %}>出租中</option>
             <option value="0" {% if is_rented == "0" %}selected{% endif %}>未出租</option>
         </select>
-
-        <button type="submit" style="padding: 8px 15px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            搜索
-        </button>
+        <button type="submit" style="padding: 8px 15px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">搜索</button>
     </form>
 
+    <!-- 车辆卡片 -->
     {% if cars %}
-   <div class="container">
-    {% for car in cars %}
-    <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}" class="card">
-        {% if car.image_path %}
-        <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
-        {% else %}
-        <img src="{{ url_for('auth.static', filename='images/no_image_available.png') }}" alt="无图片">
-        {% endif %}
-        <div class="content">
-            <h3>{{ car.car_name }}</h3>
-            <p>{{ car.description or '无描述' }}</p>
-            <p class="price">价格: ¥{{ car.price }}</p>
+    <div class="container">
+        {% for car in cars %}
+        <div class="card">
+            <a href="{{ url_for('auth.car_details', car_id=car.car_id) }}">
+                {% if car.image_path %}
+                <img src="{{ url_for('static', filename=car.image_path) }}" alt="{{ car.car_name }}">
+                {% else %}
+                <img src="{{ url_for('auth.static', filename='images/no_image_available.png') }}" alt="无图片">
+                {% endif %}
+            </a>
+            <div class="content">
+                <h3>{{ car.car_name }}</h3>
+                <p>{{ car.description or '无描述' }}</p>
+                <p class="price">价格: ¥{{ car.price }}</p>
+                {% if current_user.is_authenticated %}
+                <button class="wishlist-button" data-car-id="{{ car.car_id }}" style="margin-top: 10px; background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">添加到愿望单</button>
+                {% endif %}
+            </div>
         </div>
-    </a>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
     {% else %}
     <div style="text-align: center; margin-top: 50px; font-size: 18px; color: #888;">
         哎哟花了我吃奶的劲都没有找到车辆呢！
     </div>
     {% endif %}
-
-    <a href="{{ url_for('auth.home') }}" style="display: block; text-align: center; margin-top: 20px;">返回主页</a>
 
     <!-- AJAX 和 SweetAlert2 脚本 -->
     <script>

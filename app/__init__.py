@@ -1,7 +1,7 @@
 # app\__init__.py
 import secrets
 
-from flask import Flask, redirect
+from flask import Flask, redirect, url_for
 
 from .auth.routes import home
 from .db_utils import User
@@ -26,8 +26,13 @@ def create_app():
 
     # 初始化扩展
     bcrypt.init_app(app)
+
     login_manager.init_app(app)
+
     login_manager.login_view = 'auth.login'
+    from flask_login import LoginManager
+
+
 
     # 注册蓝图
     app.register_blueprint(auth, url_prefix='/auth')
@@ -40,7 +45,7 @@ def create_app():
     # 添加根路径重定向
     @app.route('/')
     def index():
-        return redirect('/auth')
+        return redirect(url_for('auth.ride'))
 
     return app
 
