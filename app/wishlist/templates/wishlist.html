@@ -40,7 +40,19 @@
             <p>{{ car.description or '无描述' }}</p>
             <p class="price">价格: ¥{{ car.price }}</p>
             {% if current_user.is_authenticated %}
-            <button type="button" class="remove-wishlist-button" data-car-id="{{ car.car_id }}" style="margin-top: 10px; background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">删除</button>
+            <button type="button"
+                    class="pay-button"
+                    data-car-id="{{ car.car_id }}"
+                    data-car-price="{{ car.price }}"
+                    style="margin-top: 10px; margin-right: 10px; background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                支付
+            </button>
+            <button type="button"
+                    class="remove-wishlist-button"
+                    data-car-id="{{ car.car_id }}"
+                    style="margin-top: 10px; background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                删除
+            </button>
             {% endif %}
         </div>
     </a>
@@ -53,6 +65,28 @@
 {% endif %}
 
 <script>
+    $(".pay-button").click(function () {
+        const carPrice = Math.round($(this).data("car-price")); // 将价格转换为整数
+
+        const paymentUrl = "{{ url_for('alipay.place_order', subtotal=0) }}".replace("0", carPrice);
+
+        Swal.fire({
+            title: "确认支付",
+            text: `您将支付 ¥${carPrice} 来完成订单。`,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "确认支付",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = paymentUrl;
+            }
+        });
+    });
+
+
     $(document).ready(function () {
         // 监听删除按钮点击事件
         $(".remove-wishlist-button").click(function () {
@@ -89,6 +123,7 @@
             });
         });
     });
+
 </script>
 
 

@@ -134,6 +134,8 @@ def car_details(car_id):
     images = get_images_by_car_id(car_id)  # 获取车辆的所有图片
 
     return render_template('car_details.html', car=car, images=images)
+
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     """注册页面和功能"""

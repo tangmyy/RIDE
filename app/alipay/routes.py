@@ -34,7 +34,7 @@ def paysuccess():
 def payfail():
     return "pay fail"
 
-# 下订单sqlite3
+
 @alipay_bp.route("/placeorder/<int:subtotal>", methods=["POST", "GET"])
 @login_required
 def place_order(subtotal):
