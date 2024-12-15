@@ -104,7 +104,7 @@ def ride():
     cars_with_images = []
     for car in cars:
         car_dict = dict(car)  # 将 sqlite3.Row 转换为字典
-        car_dict['image_path'] = get_first_image_by_car_id(car_dict['car_id'])  # 添加图片路径
+        car_dict['image_path'] = get_first_image_by_car_id(car_dict['car_id'])  # 通过car_id获取第一张图片路径
         cars_with_images.append(car_dict)
 
     return render_template(

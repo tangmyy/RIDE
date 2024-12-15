@@ -12,17 +12,18 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 
 def get_first_image_by_car_id(car_id):
-    """获取指定车辆的第一张图片路径"""
+    """获取指定车辆ID的第一张图片路径"""
     with sqlite3.connect(DATABASE) as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute('''
             SELECT image_path FROM car_images 
             WHERE car_id = ? 
-            ORDER BY image_id LIMIT 1
+            ORDER BY image_id ASC LIMIT 1
         ''', (car_id,))
         result = cursor.fetchone()
         return result['image_path'] if result else None
+
 
 
 def get_images_by_car_id(car_id):
@@ -54,35 +55,38 @@ def add_image(car_id, image_path):
         conn.commit()
 
 
+import uuid  # 用于生成唯一标识符
+
 def save_vehicle_image(vehicle_id, image_file):
     """
-    为指定车辆 ID 保存新图片
+    为指定车辆 ID 保存新图片，并确保文件名唯一
     """
     if not allowed_file(image_file.filename):
         raise ValueError("无效的图片类型。允许的类型：png, jpg, jpeg, gif。")
 
-    # 确保文件名安全
-    filename = secure_filename(image_file.filename)
-    # 设置相对路径（数据库中存储的路径）
-    relative_path = f'ride/{filename}'
-    # 设置文件系统中的完整路径
-    image_path = os.path.join(UPLOAD_FOLDER, filename)
+    # 确保文件名安全并生成唯一文件名
+    file_extension = image_file.filename.rsplit('.', 1)[1].lower()  # 提取文件扩展名
+    unique_filename = f"{uuid.uuid4().hex}.{file_extension}"  # 生成唯一文件名
+
+    # 设置相对路径（存入数据库的路径）和文件系统中的完整路径
+    relative_path = f'ride/{unique_filename}'
+    image_path = os.path.join(UPLOAD_FOLDER, unique_filename)
 
     # 确保上传目录存在
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
 
-    image_file.save(image_path)  # 保存图片到文件系统
+    # 保存图片到文件系统
+    image_file.save(image_path)
 
-    # 插入图片记录到数据库
+    # 将图片记录插入数据库
     with sqlite3.connect(DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO car_images (car_id, image_path)
             VALUES (?, ?)
-        ''', (vehicle_id, relative_path))  # 插入相对路径到数据库
+        ''', (vehicle_id, relative_path))
         conn.commit()
-
 
 def fetch_vehicle_by_id(vehicle_id):
     """
@@ -152,3 +156,6 @@ def delete_vehicle_image(image_id):
             conn.commit()
         else:
             print(f"图片 ID {image_id} 未找到。")
+
+import uuid  # 用于生成唯一标识符
+
